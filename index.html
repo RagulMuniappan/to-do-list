@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>list_to-do</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>To-Do List</title>
     <style>
       body {
         font-family: system-ui;
@@ -40,7 +40,7 @@
         width: 350px;
       }
 
-      h1 {
+      h3 {
         text-align: center;
         color: #333;
       }
@@ -106,7 +106,6 @@
         background: #c9302c;
       }
 
-      /* Add this to your CSS */
       .cursor-particle {
         position: fixed;
         width: 8px;
@@ -130,7 +129,6 @@
         }
       }
 
-      /* Optional: Dark mode tweaks */
       @media (prefers-color-scheme: dark) {
         .cursor-aura {
           background: radial-gradient(circle, rgba(0, 255, 255, 0.25) 10%, transparent 60%);
@@ -141,65 +139,63 @@
     </style>
   </head>
   <body>
-    <div class="cursor-particle"></div>
     <div class="container">
       <h3>To-Do List</h3>
       <input type="text" id="new-task" placeholder="Add a new task..." />
       <button id="add-task-btn">Add Task</button>
       <ul id="task-list"></ul>
     </div>
+
     <script>
+      // Cursor trail animation
       document.addEventListener("mousemove", (e) => {
         const particle = document.createElement("div");
         particle.classList.add("cursor-particle");
-        document.body.appendChild(particle);
-        // Position at cursor
         particle.style.left = `${e.clientX - 4}px`;
         particle.style.top = `${e.clientY - 4}px`;
-        // Remove after animation ends
+        document.body.appendChild(particle);
         particle.addEventListener("animationend", () => {
           particle.remove();
         });
       });
-      < script > tag or JS file
-      document.addEventListener("mousemove", (e) => {
-        const cursor = document.querySelector(".cursor-glow");
-        cursor.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
-      });
-      const newTaskInput = document.getElementById('new-task');
-      const addTaskBtn = document.getElementById('add-task-btn');
-      const taskList = document.getElementById('task-list');
+
+      // To-Do List functionality
+      const newTaskInput = document.getElementById("new-task");
+      const addTaskBtn = document.getElementById("add-task-btn");
+      const taskList = document.getElementById("task-list");
 
       function createTaskElement(taskText) {
-        const li = document.createElement('li');
+        const li = document.createElement("li");
         li.textContent = taskText;
-        // Toggle completed on click
-        li.addEventListener('click', () => {
-          li.classList.toggle('completed');
+
+        li.addEventListener("click", () => {
+          li.classList.toggle("completed");
         });
-        // Remove button
-        const removeBtn = document.createElement('button');
-        removeBtn.textContent = '✖';
-        removeBtn.className = 'remove-btn';
-        removeBtn.addEventListener('click', (e) => {
-          e.stopPropagation(); // Prevent toggling completed when removing
+
+        const removeBtn = document.createElement("button");
+        removeBtn.textContent = "✖";
+        removeBtn.className = "remove-btn";
+        removeBtn.addEventListener("click", (e) => {
+          e.stopPropagation();
           taskList.removeChild(li);
         });
+
         li.appendChild(removeBtn);
         return li;
       }
-      addTaskBtn.addEventListener('click', () => {
+
+      addTaskBtn.addEventListener("click", () => {
         const taskText = newTaskInput.value.trim();
-        if (taskText !== '') {
+        if (taskText !== "") {
           const taskElement = createTaskElement(taskText);
           taskList.appendChild(taskElement);
-          newTaskInput.value = '';
+          newTaskInput.value = "";
           newTaskInput.focus();
         }
       });
-      // Allow adding task by pressing Enter key
-      newTaskInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') {
+
+      newTaskInput.addEventListener("keypress", (e) => {
+        if (e.key === "Enter") {
           addTaskBtn.click();
         }
       });
