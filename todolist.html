@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>list_to-do</title>
+    <style>
+      body {
+        font-family: system-ui;
+        background-color: black;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        height: 100vh;
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-image:
+          linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+        background-size: 25px 25px;
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      .container {
+        background: white;
+        margin-top: 150px;
+        padding: 20px 30px;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        width: 350px;
+      }
+
+      h1 {
+        text-align: center;
+        color: #333;
+      }
+
+      #new-task {
+        width: 100%;
+        padding: 10px;
+        font-size: 16px;
+        border: 2px solid #ddd;
+        border-radius: 4px;
+        box-sizing: border-box;
+      }
+
+      #add-task-btn {
+        margin-top: 10px;
+        width: 100%;
+        padding: 10px;
+        background-color: #5cb85c;
+        border: none;
+        color: white;
+        font-size: 16px;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+
+      #add-task-btn:hover {
+        background-color: #4cae4c;
+      }
+
+      ul#task-list {
+        list-style: none;
+        padding: 0;
+        margin-top: 20px;
+      }
+
+      ul#task-list li {
+        background: #fafafa;
+        border: 1px solid #ddd;
+        padding: 10px;
+        margin-bottom: 8px;
+        border-radius: 4px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      ul#task-list li.completed {
+        text-decoration: line-through;
+        color: #999;
+      }
+
+      .remove-btn {
+        background: #d9534f;
+        border: none;
+        color: white;
+        padding: 5px 10px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 14px;
+      }
+
+      .remove-btn:hover {
+        background: #c9302c;
+      }
+
+      /* Add this to your CSS */
+      .cursor-particle {
+        position: fixed;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: rgba(0, 255, 200, 0.6);
+        pointer-events: none;
+        z-index: 9999;
+        animation: trail-fade 0.6s forwards;
+      }
+
+      @keyframes trail-fade {
+        0% {
+          transform: scale(1);
+          opacity: 1;
+        }
+
+        100% {
+          transform: scale(0.4);
+          opacity: 0;
+        }
+      }
+
+      /* Optional: Dark mode tweaks */
+      @media (prefers-color-scheme: dark) {
+        .cursor-aura {
+          background: radial-gradient(circle, rgba(0, 255, 255, 0.25) 10%, transparent 60%);
+          box-shadow: 0 0 20px rgba(0, 255, 255, 0.4);
+          mix-blend-mode: lighten;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="cursor-particle"></div>
+    <div class="container">
+      <h3>To-Do List</h3>
+      <input type="text" id="new-task" placeholder="Add a new task..." />
+      <button id="add-task-btn">Add Task</button>
+      <ul id="task-list"></ul>
+    </div>
+    <script>
+      document.addEventListener("mousemove", (e) => {
+        const particle = document.createElement("div");
+        particle.classList.add("cursor-particle");
+        document.body.appendChild(particle);
+        // Position at cursor
+        particle.style.left = `${e.clientX - 4}px`;
+        particle.style.top = `${e.clientY - 4}px`;
+        // Remove after animation ends
+        particle.addEventListener("animationend", () => {
+          particle.remove();
+        });
+      });
+    </script>
+    <script>
+      // Add this to a 
+      < script > tag or JS file
+      document.addEventListener("mousemove", (e) => {
+        const cursor = document.querySelector(".cursor-glow");
+        cursor.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
+      });
+      const newTaskInput = document.getElementById('new-task');
+      const addTaskBtn = document.getElementById('add-task-btn');
+      const taskList = document.getElementById('task-list');
+
+      function createTaskElement(taskText) {
+        const li = document.createElement('li');
+        li.textContent = taskText;
+        // Toggle completed on click
+        li.addEventListener('click', () => {
+          li.classList.toggle('completed');
+        });
+        // Remove button
+        const removeBtn = document.createElement('button');
+        removeBtn.textContent = '✖';
+        removeBtn.className = 'remove-btn';
+        removeBtn.addEventListener('click', (e) => {
+          e.stopPropagation(); // Prevent toggling completed when removing
+          taskList.removeChild(li);
+        });
+        li.appendChild(removeBtn);
+        return li;
+      }
+      addTaskBtn.addEventListener('click', () => {
+        const taskText = newTaskInput.value.trim();
+        if (taskText !== '') {
+          const taskElement = createTaskElement(taskText);
+          taskList.appendChild(taskElement);
+          newTaskInput.value = '';
+          newTaskInput.focus();
+        }
+      });
+      // Allow adding task by pressing Enter key
+      newTaskInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+          addTaskBtn.click();
+        }
+      });
+    </script>
+  </body>
+</html>
